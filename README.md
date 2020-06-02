@@ -6,7 +6,7 @@ HNGi7 Task 2 (By: Team-Fierce)
   <li>Fork this repository</li> <br>
   <li>Clone the forked repo to your computer</li> <br>
   <li>Add your script to the scripts folder (Please follow the naming convention earlier stated - {username-HNG-ID.ext” ---- ( where “.ext” is your file extension .js/.py/.php )
-So for example, mine wil be tomiwaajayi-HNG-00020.js / tomiwaajayi-HNG-00020.php / tomiwaajayi-HNG-00020.py, all depending on my script extension}</li> <br>
+So for example, mine will be tomiwaajayi-HNG-00020.js / tomiwaajayi-HNG-00020.php / tomiwaajayi-HNG-00020.py, all depending on my script extension}</li> <br>
   <li>After you have added your script file to the scripts folder, run the following in gitbash or teminal
     <ul>
       <li>git checkout -b HNG-ID (e.g <code>git checkout -b HNG-00020</code>)</li> 

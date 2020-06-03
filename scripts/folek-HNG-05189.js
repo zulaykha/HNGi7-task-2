@@ -1,1 +1,8 @@
-console.log("Hello World, this is Foluso Kayode with HNGi7 ID HNG-05189 and email folusolibrary@gmail.com using JavaScript for stage 2 task");
+var genId = "HNG-05189";
+var genName = "Foluso Kayode";
+var genLang = "JavaScript";
+var genEmail = "folusolibrary@gmail.com"
+
+var fullId = "Hello World, this is" + " " + genName + " " + "with HNGi7 ID " + genId + " " + "and email "+ genEmail + " using " + genLang + " " + "for stage 2 task"
+
+console.log(fullId);

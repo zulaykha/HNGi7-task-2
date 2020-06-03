@@ -3,7 +3,7 @@
 // Listen to URL query param if JSON output is enabled
 $query = $_SERVER["QUERY_STRING"] ?? '';
 $jsonEnabled = isset($query) && $query == 'json';
-echo $jsonEnabled ? "JSON output is enabled \n\n" : "JSON output is disabled \n\n";
+echo $jsonEnabled ? "JSON output is enabled <br><br>" : "JSON output is disabled <br><br>";
 
 // Define a function to output files in a directory
 function outputFiles($path)
@@ -27,17 +27,17 @@ function outputFiles($path)
           if ($fileExtension) {
             switch ($fileExtension) {
               case 'js':
-                $scriptOut = run_script("node $filePath 2>&1");
+                $scriptOut = run_script("node $filePath 2>&1", "Javascript");
                 array_push($totalOutput['valid'], $scriptOut);
                 break;
 
               case 'py':
-                $scriptOut = run_script("python $filePath 2>&1");
+                $scriptOut = run_script("python3 $filePath 2>&1", "Python");
                 array_push($totalOutput['valid'], $scriptOut);
                 break;
 
               case 'php':
-                $scriptOut = run_script("php $filePath 2>&1");
+                $scriptOut = run_script("php $filePath 2>&1", "PHP");
                 array_push($totalOutput['valid'], $scriptOut);
                 break;
 
@@ -53,6 +53,7 @@ function outputFiles($path)
   }
   return $totalOutput; // return every single iteration
 }
+
 // get file extension
 function get_extension($file)
 {
@@ -64,7 +65,7 @@ function get_extension($file)
 /**
  * Executes team member's scripts and returns an object with the required details
  * */
-function run_script($command)
+function run_script($command, $language)
 {
 
   $scriptOutput = [];
@@ -72,7 +73,25 @@ function run_script($command)
 
   $status = getScriptOutputStatus($bashOut);
 
+  // get full name
+  $bashOutPart = explode(' with HNG', $bashOut)[0];
+  $fullName = explode('this is ', $bashOutPart);
+
+  // extract email
+  $emailPattern = '/[a-z0-9_\-\+\.]+@[a-z0-9\-]+\.([a-z]{2,4})(?:\.[a-z]{2})?/i';
+  $extractedMail = extractSubstring($emailPattern, $bashOut);
+  $extractedMail = $extractedMail != "" ? $extractedMail : "null";
+
+  // extract HNG ID
+  $hngIdPattern = '/\sHNG-\d{3,}/i';
+  $extractedHngIdPattern = extractSubstring($hngIdPattern, $bashOut);
+  $extractedHngId = $extractedHngIdPattern != "" ? $extractedHngIdPattern : "null";
+
   $scriptOutput['output'] = $bashOut;
+  $scriptOutput['name'] = count($fullName) > 1 ? $fullName[1] : 'null';;
+  $scriptOutput['id'] = $extractedHngId;
+  $scriptOutput['email'] = $extractedMail;
+  $scriptOutput['language'] = $language;
   $scriptOutput['status'] = $status;
 
   return $scriptOutput;
@@ -83,8 +102,15 @@ function getScriptOutputStatus($output)
   return preg_match('/^Hello\sWorld[,|.|!]?\sthis\sis\s[a-zA-Z]{2,}\s[a-zA-Z]{2,}(\s[a-zA-Z]{2,})?\swith\sHNGi7\sID\s(HNG-\d{3,})\sand\semail\s(([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6})\susing\s[a-zA-Z|#]{2,}\sfor\sstage\s2\stask.?$/i', trim($output)) ? 'passed' : 'failed';
 }
 
+function extractSubstring($pattern, $inputString) {
+    preg_match_all($pattern, $inputString, $emailMatch);
+    return $emailMatch[0][0];
+}
+
+
 // Call the function
 $outs = outputFiles("scripts");
 
 // preview the results
 echo json_encode($outs);
+?>

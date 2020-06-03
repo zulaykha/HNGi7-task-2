@@ -9,4 +9,5 @@ const data = {
 const { message, name, id, language, email } = data;
 const output = `${message}, this is ${name} with HNG ID ${id} and email ${email} using ${language} for stage 2 task.`;
 
-return console.log(output);
+console.log(output);
+return output

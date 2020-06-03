@@ -1,10 +1,2 @@
-var hello = "Hello World";
-var name = "this is Akindele Taiwo with";
-var hngId = "HNG-03847";
-var email = "taiwodavecode@gmail.com";
-var language = "using Javascript for stage 2 task.";
-
-var text = hello + "," + name + " " + hngId + " email address " +email + " " + language;
-
-console.log(text);
-
+let userdave = "Hello World, this is Akindele Taiwo with HNGi7 ID HNG-03847 using Javascript for stage 2 task and taiwodavecode@gmail.com.";
+    	console.log (userdave);

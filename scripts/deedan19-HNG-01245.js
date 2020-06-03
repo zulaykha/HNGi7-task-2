@@ -6,4 +6,4 @@ var myLang =' using JavaScript for stage 2 task.';
 
 var fullDetails= myIntro + myName + ' with ' + myId + ' and ' + myEmail + myLang;
 
-console.log(fullDetails);
+console.log(fullDetails); 

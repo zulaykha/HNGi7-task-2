@@ -1,4 +1,4 @@
-var myName , language, hngId;
+var myName , language, hngId, email;
 myName = 'AKARAKIRI VOLLMANN';
 hngId = 'HNG-00161';
 language = "JavaScript";

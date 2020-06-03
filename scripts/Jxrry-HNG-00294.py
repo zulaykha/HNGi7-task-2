@@ -1,4 +1,4 @@
-full_name"Atoyebi Olaoluwa"
+full_name="Atoyebi Olaoluwa"
 hng_id="HNG-00294"
 email="artoyebi@gmail.com"
 language="Python"

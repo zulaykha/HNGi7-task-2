@@ -9,7 +9,7 @@ const programLangauge = 'javascript'; //this variable holds the programl Langaug
 const internEmail = 'ochiazam@gmail.com'; // the interns e-mail address
 
 //this statement prints the information the console
-const fullInternInfo = ' Hello Word, this is ' + internName + ' with HNGi7 ID ' + internID + ' and email ' + internEmail + ' using ' + programLangauge + ' for stage 2 task ');
+const fullInternInfo = ' Hello Word, this is ' + internName + ' with HNGi7 ID ' + internID + ' and email ' + internEmail + ' using ' + programLangauge + ' for stage 2 task ';
 
 //Displays the full intern information
 console.log(fullInternInfo);

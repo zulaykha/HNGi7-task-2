@@ -5,7 +5,7 @@ let person ={
     language:"JavaScript"
 };
  
-let output = `Hello World, this is ${person.fullName} with HNGi7 ID ${person.hngID} and email ${myEmail}using ${person.language} for stage 2 task`
+let output = `Hello World, this is ${person.fullName} with HNGi7 ID ${person.hngID} and email ${person.myEmail} using ${person.language} for stage 2 task`;
 console.log(output);
 
  

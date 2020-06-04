@@ -6,6 +6,6 @@ let tf_urielone = {
     language: "javascript"
 }
 
-let urielone_msg = "Hello World, My name is " + tf_urielone.name + " with HNGi7 id of " + tf_urielone.id + " and email: " + tf_urielone.email + ", i used " + tf_urielone.language + " scripting language for the task 2";
+let urielone_msg = "Hello World, My name is " + tf_urielone.name + " with HNGi7 id of " + tf_urielone.id + " and email: " + tf_urielone.email + ", i used " + tf_urielone.language + " scripting language for the stage 2 task";
 
 console.log(urielone_msg);

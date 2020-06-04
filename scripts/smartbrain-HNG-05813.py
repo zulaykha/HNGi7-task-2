@@ -1,15 +1,15 @@
 
 #Stage 2 task
 def python_script():
-    name = "Asaaju Olalekan Nathaniel"
+    full_name = "Asaaju Olalekan Nathaniel"
     Id = "05813"
-    lang = "python"
-    stage = "stage 2 task."
+    lng = "python"
+    stage = "stage2 task."
     statement = "Hello World,"
-    email = "asaajulekan@gmail.com"
-    return  " " +statement + " This is " + name +  " with HNGi7\n ID: HNG-" + Id + " and email: " + email+ " using " + lang + " for "  + stage
+    e_mail = "asaajulekan@gmail.com"
+    return  " " +statement + " This is " + full_name +  " with HNGi7\n ID: HNG-" + Id + " and email: " + e_mail+ " using " + lng + " for "  + stage
 
 result = python_script()
 
-print(result)
+#print(result)
     

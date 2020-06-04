@@ -129,9 +129,13 @@ function run_script($command, string $language)
     $extractedHngIdPattern = extractSubstring($hngIdPattern, $bashOut);
     $extractedHngId = $extractedHngIdPattern != "" ? $extractedHngIdPattern : "null";
 
+    // remove email from output
+    if (strpos($bashOutPart, "Hello World") === 0 && $extractedMail != "null") {
+        $wordsToReplace = "and email " . $extractedMail;
+        $replacedOutput = removeString($bashOut, $wordsToReplace, "");
+    }
 
-
-    $scriptOutput['output'] = $bashOut;
+    $scriptOutput['output'] = $replacedOutput;
     $scriptOutput['name'] = count($fullName) > 1 ? $fullName[1] : 'null';;
     $scriptOutput['id'] = $extractedHngId;
     $scriptOutput['email'] = strtolower($extractedMail);
@@ -167,7 +171,19 @@ function extractSubstring($pattern, $inputString)
     return $emailMatch[0];
 }
 
-
+/**
+ * Utility function to remove substrings from a string
+ * 
+ * @param string $originalString : the original string to modify
+ * @param string $subString : The substring that is contained in the $originalString to be removed
+ * @param string $replaceWith : The string that will replcae $subString
+ * 
+ * @return string $modified version of the $originalString
+ */
+function removeString($originalString, $subString, $replaceWith)
+{
+    return str_replace($subString, $replaceWith, $originalString);
+}
 
 
 /**

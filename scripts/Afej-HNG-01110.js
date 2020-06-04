@@ -3,6 +3,6 @@ const name = 'Joshua Afekuro',
   email = 'afekurojoshua@gmail.com',
   language = 'Javascript';
 
-let output = `Hello world, this is ${name} with HNGi7 ID ${id} and email ${email} using ${language} for stage 2 task.`;
+let output = `Hello World, this is ${name} with HNGi7 ID ${id} and email ${email} using ${language} for stage 2 task`;
 
 console.log(output);

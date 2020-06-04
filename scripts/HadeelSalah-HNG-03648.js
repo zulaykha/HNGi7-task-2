@@ -5,5 +5,4 @@ const fullname = "Hadeel Salah",
       result ="Hello World, this is " + fullname + " with HNGi7 ID " + id + " and email " + email + " using " + lang + " for stage 2 task " ;    
      
      
-     
 console.log(result); 

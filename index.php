@@ -125,7 +125,7 @@ function run_script($command, string $language, string $file)
 
     // get full name
     $bashOutParts = explode(' with HNG', $bashOut)[0];
-    $fullName = explode('this is ', $bashOutParts);
+    $fullName = explode('his is ', $bashOutParts);
 
     // extract email
     $emailPattern = '/[a-z0-9_\-\+\.]+@[a-z0-9\-]+\.([a-z]{2,4})(?:\.[a-z]{2})?/i';

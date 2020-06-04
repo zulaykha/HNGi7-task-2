@@ -59,6 +59,7 @@ function outputFiles($path)
                                 $properResponse = "Files with ." . $fileExtension . " extension are not supported!";
                                 $scriptOut['output'] = $properResponse;
                                 $scriptOut['name'] = null;
+                                $scriptOut['file'] = $file;
                                 $scriptOut['id'] = null;
                                 $scriptOut['email'] = null;
                                 $scriptOut['language'] = null;

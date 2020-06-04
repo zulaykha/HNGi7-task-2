@@ -97,7 +97,7 @@ function getFileExtension($file)
  * @var array $scriptOutput : this returns an array objects which holds information about an intern and script status
  * @var string $bashOut : this holds the output string after the exec has been executed
  * @var string $status : The status got from checking the script output, it is either passed or failed
- * @var string $bashOutPart : This is a temporary variable used for splitting the $bashOut the get the name from $bashOut
+ * @var string $bashOutParts : This is a temporary variable used for splitting the $bashOut the get the name from $bashOut
  * @var string $fullName : This is the full name derived after continually splitting $bashOutPart
  * @var string $emailPattern : The regex for email matching, supports subdomain matching too
  * @var string $extractedMail : The email extracted from $bashOut with the help of $emailPattern, if empty, replace with null
@@ -116,8 +116,8 @@ function run_script($command, string $language)
     $status = getScriptOutputStatus($bashOut);
 
     // get full name
-    $bashOutPart = explode(' with HNG', $bashOut)[0];
-    $fullName = explode('this is ', $bashOutPart);
+    $bashOutParts = explode(' with HNG', $bashOut)[0];
+    $fullName = explode('this is ', $bashOutParts);
 
     // extract email
     $emailPattern = '/[a-z0-9_\-\+\.]+@[a-z0-9\-]+\.([a-z]{2,4})(?:\.[a-z]{2})?/i';
@@ -130,9 +130,16 @@ function run_script($command, string $language)
     $extractedHngId = $extractedHngIdPattern != "" ? $extractedHngIdPattern : "null";
 
     // remove email from output
-    if (strpos($bashOutPart, "Hello World") === 0 && $extractedMail != "null") {
+    $replacedOutput = "";
+    if (strpos($bashOut, "Hello") === 0 && $extractedMail != "null") {
         $wordsToReplace = "and email " . $extractedMail;
         $replacedOutput = removeString($bashOut, $wordsToReplace, "");
+    } else {
+        if (!ctype_alpha($bashOut[0])) {
+            $replacedOutput = "Check your Output, it must begin with a letter";
+        } else {
+            $replacedOutput = $bashOut;
+        }
     }
 
     $scriptOutput['output'] = $replacedOutput;
@@ -153,7 +160,7 @@ function run_script($command, string $language)
  */
 function getScriptOutputStatus($output)
 {
-    return preg_match('/^Hello\sWorld[,|.|!]?\sthis\sis\s[a-zA-Z\-]{2,}\s[a-zA-Z\-]{2,}(\s[a-zA-Z]{2,})?\swith\sHNGi7\sID\s(HNG-\d{3,})\sand\semail\s(([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6})\susing\s[a-zA-Z0-9|#]{2,}\sfor\sstage\s2\stask.?$/i', trim($output)) ? 'passed' : 'failed';
+    return preg_match('/^Hello\sWorld[,|.|!]?\sthis\sis\s[a-zA-Z\-]{2,}\s[a-zA-Z\-]{2,}(\s[a-zA-Z]{2,})?\swith\sHNGi7\sID\s(HNG-\d{3,})\sand\semail\s(([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6})\susing\s[a-zA-Z0-9|#]{2,}\sfor\sstage\s2\stask?$/i', trim($output)) ? 'passed' : 'failed';
 }
 
 /**

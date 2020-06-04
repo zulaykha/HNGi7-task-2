@@ -58,11 +58,11 @@ function outputFiles($path)
                                 $scriptOut = [];
                                 $properResponse = "Files with ." . $fileExtension . " extension are not supported!";
                                 $scriptOut['output'] = $properResponse;
-                                $scriptOut['name'] = null;
+                                $scriptOut['name'] = "null";
                                 $scriptOut['file'] = $file;
-                                $scriptOut['id'] = null;
-                                $scriptOut['email'] = null;
-                                $scriptOut['language'] = null;
+                                $scriptOut['id'] = "null";
+                                $scriptOut['email'] = "null";
+                                $scriptOut['language'] = "null";
                                 $scriptOut['status'] = "fail";
                                 array_push($totalOutput['invalid'], $scriptOut);
                                 break;

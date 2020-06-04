@@ -142,7 +142,7 @@ function run_script($command, string $language)
         $wordsToReplace = "and email " . $extractedMail;
         $replacedOutput = removeString($bashOut, $wordsToReplace, "");
     } else {
-        if (!ctype_alpha($bashOut[0])) {
+        if ($bashOut = '' || !ctype_alpha($bashOut[0])) {
             $replacedOutput = "Check your Output, it must begin with a letter";
         } else {
             $replacedOutput = $bashOut;
@@ -182,7 +182,7 @@ function getScriptOutputStatus($output)
 function extractSubstring($pattern, $inputString)
 {
     preg_match($pattern, $inputString, $emailMatch);
-    return $emailMatch[0];
+    return count($emailMatch) > 0 ? $emailMatch[0] : 'N/A';
 }
 
 /**
@@ -239,7 +239,7 @@ list($outs, $totalInternsSubmitted, $totalPassOutput, $totalFailOutput) = output
 
 // preview the results
 if ($jsonEnabled) {
-    echo json_encode($outs);
+    echo json_encode($outs['valid']);
 } else {
 ?>
     <html lang="en">

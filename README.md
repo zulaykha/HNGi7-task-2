@@ -18,7 +18,7 @@ So for example, mine will be tomiwaajayi-HNG-00020.js / tomiwaajayi-HNG-00020.ph
   <li>Create a pull request straight to this repository <br> NB: In your forked repo, don't merge your newly created branch into develop i.e you will be creating a PR with your new branch (which contains your script) ahead of your develop branch</li>
 </ol>
 
-### Languages Supported Used
+### Languages Supported
 
 - Python (3.x)
 - Javascript (Node)

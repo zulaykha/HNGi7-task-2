@@ -4,9 +4,10 @@ var Bukky = {
     "intern": "HNGi7",
     "id": "HNG-01983",
     "language used": "JavaScript",
-    "task": "stage2"
+    "task": "stage 2",
+    "email": "bukkyolomolehin@yahoo.com"
   };
   
-  var myId = Bukky.greeting + " this is " +Bukky.name + " with " + Bukky.id + " using " + Bukky["language used"] + " for " + Bukky.task;
+  var myId = Bukky.greeting + "," + " this is " +Bukky.name + " with " + "HNGi7 ID " + Bukky.id + " and " + "email " + Bukky.email + " using " + Bukky["language used"] + " for " + Bukky.task + " task "  ;
   
   console.log(myId);

@@ -1,7 +1,12 @@
-//pass arguments and call.
-printTask2Info("Simeon Kenneth", "HNG-05098","JavaScript");
+// call function.
+printTask2Info();
 
 //script to display a brief info about me, the task completed and the language used
-function printTask2Info(fullName,ID,language){
-    return console.log(`Hello World, this is ${fullName} with HNGi7 ID ${ID} using ${language} for stage 2 task.`);
-} 
+function printTask2Info(){
+  const myFullName = "Simeon Kenneth",
+        myHNGId = "HNG-05098",
+        scriptLanguage = "JavaScript",
+        myEmail = "simeonkenneth3@gmail.com";
+
+    return (`Hello World, this is ${myFullName} with HNGi7 ID ${myHNGId} and email ${myEmail} using ${scriptLanguage} for stage 2 task.`);
+};

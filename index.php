@@ -55,8 +55,15 @@ function outputFiles($path)
                                 break;
 
                             default:
-                                echo "'$file' is not valid \n";
-                                array_push($totalOutput['invalid'], $file);
+                                $scriptOut = [];
+                                $properResponse = "Files with ." . $fileExtension . " extension are not supported!";
+                                $scriptOut['output'] = $properResponse;
+                                $scriptOut['name'] = null;
+                                $scriptOut['id'] = null;
+                                $scriptOut['email'] = null;
+                                $scriptOut['language'] = null;
+                                $scriptOut['status'] = "fail";
+                                array_push($totalOutput['invalid'], $scriptOut);
                                 break;
                         }
                     }
@@ -156,11 +163,11 @@ function run_script($command, string $language)
  * Pattern Matching for the string Output
  * 
  * @param string $output : The output from exec
- * @return string Passed : or Failed, and that depends if string of $output matches the Regex
+ * @return string Pass : or Fail, and that depends if string of $output matches the Regex
  */
 function getScriptOutputStatus($output)
 {
-    return preg_match('/^Hello\sWorld[,|.|!]?\sthis\sis\s[a-zA-Z\-]{2,}\s[a-zA-Z\-]{2,}(\s[a-zA-Z]{2,})?\swith\sHNGi7\sID\s(HNG-\d{3,})\sand\semail\s(([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6})\susing\s[a-zA-Z0-9|#]{2,}\sfor\sstage\s2\stask?$/i', trim($output)) ? 'passed' : 'failed';
+    return preg_match('/^Hello\sWorld[,|.|!]?\sthis\sis\s[a-zA-Z\-]{2,}\s[a-zA-Z\-]{2,}(\s[a-zA-Z]{2,})?\swith\sHNGi7\sID\s(HNG-\d{3,})\sand\semail\s(([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6})\susing\s[a-zA-Z0-9|#]{2,}\sfor\sstage\s2\stask?$/i', trim($output)) ? 'pass' : 'fail';
 }
 
 /**
@@ -213,9 +220,9 @@ function getPassedAndFailed($totalOutputProcessed)
     $totalFail = 0;
 
     foreach ($validOutput as $output) {
-        if ($output['status'] == 'passed') {
+        if ($output['status'] == 'pass') {
             $totalPass++;
-        } elseif ($output['status'] == 'failed') {
+        } elseif ($output['status'] == 'fail') {
             $totalFail++;
         }
     }
@@ -401,11 +408,11 @@ if ($jsonEnabled) {
                 color: #2F80ED;
             }
 
-            .contents .top-row .passed span {
+            .contents .top-row .pass span {
                 color: #27AE60;
             }
 
-            .contents .top-row .failed span {
+            .contents .top-row .fail span {
                 color: #EB5757;
             }
 
@@ -648,11 +655,11 @@ if ($jsonEnabled) {
                 text-align: center;
             }
 
-            .contents table tbody tr .status .passed {
+            .contents table tbody tr .status .pass {
                 background-color: #27AE60;
             }
 
-            .contents table tbody tr .status .failed {
+            .contents table tbody tr .status .fail {
                 background-color: #EB5757;
             }
 
@@ -676,8 +683,8 @@ if ($jsonEnabled) {
             <div class="contents">
                 <div class="top-row">
                     <p>submitted: <span><?php echo ($totalInternsSubmitted) ?></span></p>
-                    <p class="passed">passed: <span><?php echo ($totalPassOutput) ?></span></p>
-                    <p class="failed">failed: <span><?php echo ($totalFailOutput) ?></span></p>
+                    <p class="pass">pass: <span><?php echo ($totalPassOutput) ?></span></p>
+                    <p class="fail">fail: <span><?php echo ($totalFailOutput) ?></span></p>
                 </div>
 
                 <div class="log">
@@ -707,15 +714,16 @@ if ($jsonEnabled) {
                             <?php
                             $rowRecord = 1;
                             $outputRecord = $outs['valid'];
+                            $outputFailRecord = $outs['invalid'];
                             foreach ($outputRecord as $record) {
-                                $peformanceStatus = $record['status'] == "passed" ? "Passed" : "Failed";
+                                $peformanceStatusValid = $record['status'] == "pass" ? "Pass" : "Fail";
                                 echo <<<EOL
                                             <tr>
                                                 <td class="sn">$rowRecord</td>
                                                 <td class="id">$record[id]</td>
                                                 <td class="name">$record[name]</td>
                                                 <td class="message">$record[output]</td>
-                                                <td class="status"><span class=$record[status]>$peformanceStatus</span></td>
+                                                <td class="status"><span class=$record[status]>$peformanceStatusValid</span></td>
                                             </tr>
                                             EOL;
                                 $rowRecord++;
@@ -723,7 +731,25 @@ if ($jsonEnabled) {
                                 // flush and buffer
                                 flush();
                                 ob_flush();
-                                sleep(1);
+                                // sleep(1);
+                            }
+                            foreach ($outputFailRecord as $failRecord) {
+                                $peformanceStatusInvalid = $failRecord['status'] == "pass" ? "Pass" : "Fail";
+                                echo <<<EOL
+                                            <tr>
+                                                <td class="sn">$rowRecord</td>
+                                                <td class="id">$failRecord[id]</td>
+                                                <td class="name">$failRecord[name]</td>
+                                                <td class="message">$failRecord[output]</td>
+                                                <td class="status"><span class=$failRecord[status]>$peformanceStatusInvalid</span></td>
+                                            </tr>
+                                            EOL;
+                                $rowRecord++;
+
+                                // flush and buffer
+                                flush();
+                                ob_flush();
+                                // sleep(1);
                             } ?>
                         </tbody>
                     </table>

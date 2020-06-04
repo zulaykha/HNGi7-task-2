@@ -239,7 +239,7 @@ list($outs, $totalInternsSubmitted, $totalPassOutput, $totalFailOutput) = output
 
 // preview the results
 if ($jsonEnabled) {
-    echo json_encode($outs);
+    echo json_encode($outs['valid']);
 } else {
 ?>
     <html lang="en">

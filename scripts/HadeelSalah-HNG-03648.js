@@ -1,10 +1,8 @@
-const name = "Hadeel Salah",
-     id = "HNG-03648",
-     email = "hadeelsalah80@gmail.com", 
-     language = "JavaScript", 
-     result = "My name is" + name + " and my HNGi7 ID is " + id + ", my email is " + email + "  this is done using " + language + " for task 2 "; 
-     
-     
+const fullname = "Hadeel Salah",
+      id = "HNG-03648",
+      email = "hadeelsalah80@gmail.com", 
+      lang = "JavaScript", 
+      result ="Hello World, this is " + fullname + " with HNGi7 ID " + id + " and email " + email + " using " + lang + " for stage 2 task " ;    
      
      
 console.log(result); 

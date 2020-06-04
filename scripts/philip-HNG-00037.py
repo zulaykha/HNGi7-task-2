@@ -8,5 +8,4 @@ hngid= 'HNG-00037'
 lang= 'python'
 email= 'philipokiokiocodes@gmail.com'
 
-id
 task(fullname,hngid,lang, email)

@@ -10,6 +10,5 @@ def python_script():
     return  " " +statement + " This is " + full_name +  " with HNGi7\n ID: HNG-" + Id + " and email: " + e_mail+ " using " + lng + " for "  + stage
 
 result = python_script()
-
-#print(result)
+print(result)
     

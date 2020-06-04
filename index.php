@@ -239,7 +239,8 @@ list($outs, $totalInternsSubmitted, $totalPassOutput, $totalFailOutput) = output
 
 // preview the results
 if ($jsonEnabled) {
-    echo json_encode($outs['valid']);
+    header('Content-Type: application/json'); // set json header
+    echo json_encode($outs);
 } else {
 ?>
     <html lang="en">
@@ -717,33 +718,13 @@ if ($jsonEnabled) {
                             $outputFailRecord = $outs['invalid'];
                             foreach ($outputRecord as $record) {
                                 $peformanceStatusValid = $record['status'] == "pass" ? "Pass" : "Fail";
-                                echo <<<EOL
-                                            <tr>
-                                                <td class="sn">$rowRecord</td>
-                                                <td class="id">$record[id]</td>
-                                                <td class="name">$record[name]</td>
-                                                <td class="message">$record[output]</td>
-                                                <td class="status"><span class=$record[status]>$peformanceStatusValid</span></td>
-                                            </tr>
-                                            EOL;
-                                $rowRecord++;
-
-                                // flush and buffer
-                                flush();
-                                ob_flush();
-                                sleep(1);
-                            }
-                            foreach ($outputFailRecord as $failRecord) {
-                                $peformanceStatusInvalid = $failRecord['status'] == "pass" ? "Pass" : "Fail";
-                                echo <<<EOL
-                                            <tr>
-                                                <td class="sn">$rowRecord</td>
-                                                <td class="id">$failRecord[id]</td>
-                                                <td class="name">$failRecord[name]</td>
-                                                <td class="message">$failRecord[output]</td>
-                                                <td class="status"><span class=$failRecord[status]>$peformanceStatusInvalid</span></td>
-                                            </tr>
-                                            EOL;
+                                echo '<tr>';
+                                echo   '<td class="sn">' . $rowRecord . '</td>';
+                                echo '<td class="id">' . $record['id'] . '</td>';
+                                echo '<td class="name">' . $record['name'] . '</td>';
+                                echo '<td class="message">' . $record['output'] . '</td>';
+                                echo '<td class="status"><span class=' . $record['status'] . '>' . $peformanceStatusValid . '</span></td>';
+                                echo '</tr>';
                                 $rowRecord++;
 
                                 // flush and buffer

@@ -40,17 +40,17 @@ function outputFiles($path)
                     if ($fileExtension) {
                         switch ($fileExtension) {
                             case 'js':
-                                $scriptOut = run_script("node $filePath 2>&1", "Javascript");
+                                $scriptOut = run_script("node $filePath 2>&1", "Javascript", $file);
                                 array_push($totalOutput['valid'], $scriptOut);
                                 break;
 
                             case 'py':
-                                $scriptOut = run_script("python3 $filePath 2>&1", "Python");
+                                $scriptOut = run_script("python3 $filePath 2>&1", "Python", $file);
                                 array_push($totalOutput['valid'], $scriptOut);
                                 break;
 
                             case 'php':
-                                $scriptOut = run_script("php $filePath 2>&1", "PHP");
+                                $scriptOut = run_script("php $filePath 2>&1", "PHP", $file);
                                 array_push($totalOutput['valid'], $scriptOut);
                                 break;
 
@@ -114,7 +114,7 @@ function getFileExtension($file)
  * 
  * @return array An array of object containing a given intern information and script status
  * */
-function run_script($command, string $language)
+function run_script($command, string $language, string $file)
 {
 
     $scriptOutput = [];
@@ -153,6 +153,7 @@ function run_script($command, string $language)
     $scriptOutput['name'] = count($fullName) > 1 ? $fullName[1] : 'null';;
     $scriptOutput['id'] = $extractedHngId;
     $scriptOutput['email'] = strtolower($extractedMail);
+    $scriptOutput['file'] = $file;
     $scriptOutput['language'] = $language;
     $scriptOutput['status'] = $status;
 

@@ -1,8 +1,8 @@
-var greeting = "Hello World " ;
+var greeting = "Hello World, " ;
 var name = " Joy ";
 var id = " HNG-02877 ";
 var email = " joybella4eva@gmail.com ";
-var language = " Javascript ";
+var language = " JavaScript ";
 var task = " stage 2 task ";
 
 var final = greeting + "this is" + name + "with HNGi7 ID" + id + "and email" + email + "using" + language + "for" + task;

@@ -3,8 +3,8 @@
 #details
 name = "Echefu Louis"
 email = "echefulouis456@gmail.com"
-HNGi7id = "HNG-01775"
+hngi7id = "HNG-01775"
 language = "python"
 
 #formatted String Output
-print(f"Hello World, this is {name} with HNGi7 ID {HNGi7id} and email {email} using {language} for stage 2 task")
+print("Hello World, this is {} with HNGi7 ID {} and email {} using {} for stage 2 task".format(name,hngi7id,email,language))

@@ -731,7 +731,7 @@ if ($jsonEnabled) {
                                 // flush and buffer
                                 flush();
                                 ob_flush();
-                                // sleep(1);
+                                sleep(1);
                             }
                             foreach ($outputFailRecord as $failRecord) {
                                 $peformanceStatusInvalid = $failRecord['status'] == "pass" ? "Pass" : "Fail";
@@ -749,7 +749,7 @@ if ($jsonEnabled) {
                                 // flush and buffer
                                 flush();
                                 ob_flush();
-                                // sleep(1);
+                                sleep(1);
                             } ?>
                         </tbody>
                     </table>

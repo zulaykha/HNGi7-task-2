@@ -1,4 +1,4 @@
-let name = 'Ekene Samuel Anolue';
+let name = 'Anolue Ekene';
 let id = 'HNG-05513';
 let email = 'kenelight4u@gmail.com';
 let language = 'JavaScript';

@@ -6,11 +6,11 @@ Created on Thu Jun  4 16:44:40 2020
 """
 
 params = {
-    'name': 'Madukwe Chidozie',
+    'aha': 'Madukwe Chidozie',
     'ID': 'HNG-03138',
     'language': 'Python',
-    'email': 'dozziechidozie@yahoo.com'
+    'mail': 'dozziechidozie@yahoo.com'
 }
 
 if __name__ == "__main__":
-    print("Hello World, this is " + params['name'] + " with HNGi7 ID " + params['ID'] + " and email " + params['email'] +" using " + params['language']+" for stage 2 task.")
+    print("Hello World, this is " + params['aha'] + " with HNGi7 ID " + params['ID'] + " and email " + params['mail'] +" using " + params['language']+" for stage 2 task.")

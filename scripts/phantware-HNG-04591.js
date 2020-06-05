@@ -12,7 +12,7 @@ const myInfo = info.map(items =>{
   return ` ${items.greet}, this is ${items.name}  with HNGi7 ID ${items.id}, and email address ${items.email} using ${items.language} for stage 2 task `;
 });
 
-return myInfo;  
+return myInfo.toString();  
 }
 
 console.log(greetings(introduction));    

@@ -8,4 +8,4 @@ let task = "stage 2 task";
 
 let info = `${greeting}this is ${name} with HNGi7 ID ${Id} and email ${email} using ${language} for ${task}`;
 
-console.log(info);n
+console.log(info);

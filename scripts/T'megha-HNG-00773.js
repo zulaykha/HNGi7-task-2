@@ -5,7 +5,7 @@ let newintern = [{
   const Tmegha = (details) => {
   
   const myDetails = details.map(items =>{
-    return `${items.greetings}, this is ${items.name} with HNGi7 ID ${items.id} and email address ${items.email} using ${items.language} for stage 2 task`;
+    return `${items.greetings}, this is ${items.name} with HNGi7 ID ${items.id} and email ${items.email} using ${items.language} for stage 2 task`;
   });
   return myDetails;  
   }

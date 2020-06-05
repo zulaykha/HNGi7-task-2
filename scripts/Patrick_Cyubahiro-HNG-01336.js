@@ -1,8 +1,6 @@
+let name = "Patrick Cyubahiro";
+let email = "ampatrickcyubahiro@gmail.com";
+let id = "HNG-01336";
+let language = "JavaScript";
 
-var myName = "Patrick Cyubahiro";
-var myEmail = "ampatrickcyubahiro@gmail.com";
-var organizationName = "HNG";
-var myId = "HNG-01336";
-var progLanguage = "JavaScript";
-var stageTask = 2;
-console.log("Hello World, this is " +myName " with " +organizationName "7 ID " +myId " and email " +myEmail " using " +progLanguage " for stage " +stageTask " task ");
+console.log("Hello World, this is " + name + " with HNGi7 ID " + id " and email " + email + " using " + language + " for stage 2 task");

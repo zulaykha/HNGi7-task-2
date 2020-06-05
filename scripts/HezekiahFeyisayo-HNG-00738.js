@@ -1,1 +1,7 @@
-console.log("Hello World, this is Hezekiah Feyisayo with HNGi7 ID HNG-00738 and email hezekiahfeyisayo@gmail.com using JavaScript for stage 2 task");
+ var name="Hezekiah Feyisayo";
+ var id="HNG-00738";
+ var email="hezekiahfeyisayo@gmail.com";
+ var language="JavaScript";
+ 
+ console.log("Hello World, this is "+ name + " with HNGi7 ID " + id  + " and email " + email + " using" + " " + language + " " + "for stage 2 task");
+ 

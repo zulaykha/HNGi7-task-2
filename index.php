@@ -40,23 +40,31 @@ function outputFiles($path)
                     if ($fileExtension) {
                         switch ($fileExtension) {
                             case 'js':
-                                $scriptOut = run_script("node $filePath 2>&1", "Javascript");
+                                $scriptOut = run_script("node $filePath 2>&1", "Javascript", $file);
                                 array_push($totalOutput['valid'], $scriptOut);
                                 break;
 
                             case 'py':
-                                $scriptOut = run_script("python3 $filePath 2>&1", "Python");
+                                $scriptOut = run_script("python3 $filePath 2>&1", "Python", $file);
                                 array_push($totalOutput['valid'], $scriptOut);
                                 break;
 
                             case 'php':
-                                $scriptOut = run_script("php $filePath 2>&1", "PHP");
+                                $scriptOut = run_script("php $filePath 2>&1", "PHP", $file);
                                 array_push($totalOutput['valid'], $scriptOut);
                                 break;
 
                             default:
-                                echo "'$file' is not valid \n";
-                                array_push($totalOutput['invalid'], $file);
+                                $scriptOut = [];
+                                $properResponse = "Files with ." . $fileExtension . " extension are not supported!";
+                                $scriptOut['output'] = $properResponse;
+                                $scriptOut['name'] = "null";
+                                $scriptOut['file'] = $file;
+                                $scriptOut['id'] = "null";
+                                $scriptOut['email'] = "null";
+                                $scriptOut['language'] = "null";
+                                $scriptOut['status'] = "fail";
+                                array_push($totalOutput['invalid'], $scriptOut);
                                 break;
                         }
                     }
@@ -97,7 +105,7 @@ function getFileExtension($file)
  * @var array $scriptOutput : this returns an array objects which holds information about an intern and script status
  * @var string $bashOut : this holds the output string after the exec has been executed
  * @var string $status : The status got from checking the script output, it is either passed or failed
- * @var string $bashOutPart : This is a temporary variable used for splitting the $bashOut the get the name from $bashOut
+ * @var string $bashOutParts : This is a temporary variable used for splitting the $bashOut the get the name from $bashOut
  * @var string $fullName : This is the full name derived after continually splitting $bashOutPart
  * @var string $emailPattern : The regex for email matching, supports subdomain matching too
  * @var string $extractedMail : The email extracted from $bashOut with the help of $emailPattern, if empty, replace with null
@@ -107,7 +115,7 @@ function getFileExtension($file)
  * 
  * @return array An array of object containing a given intern information and script status
  * */
-function run_script($command, string $language)
+function run_script($command, string $language, string $file)
 {
 
     $scriptOutput = [];
@@ -116,8 +124,8 @@ function run_script($command, string $language)
     $status = getScriptOutputStatus($bashOut);
 
     // get full name
-    $bashOutPart = explode(' with HNG', $bashOut)[0];
-    $fullName = explode('this is ', $bashOutPart);
+    $bashOutParts = explode(' with HNG', $bashOut)[0];
+    $fullName = explode('his is ', $bashOutParts);
 
     // extract email
     $emailPattern = '/[a-z0-9_\-\+\.]+@[a-z0-9\-]+\.([a-z]{2,4})(?:\.[a-z]{2})?/i';
@@ -130,15 +138,23 @@ function run_script($command, string $language)
     $extractedHngId = $extractedHngIdPattern != "" ? $extractedHngIdPattern : "null";
 
     // remove email from output
-    if (strpos($bashOutPart, "Hello World") === 0 && $extractedMail != "null") {
+    $replacedOutput = "";
+    if (strpos($bashOut, "Hello") === 0 && $extractedMail != "null") {
         $wordsToReplace = "and email " . $extractedMail;
         $replacedOutput = removeString($bashOut, $wordsToReplace, "");
+    } else {
+        if ($bashOut = '' || !ctype_alpha($bashOut[0])) {
+            $replacedOutput = "Check your Output, it must begin with a letter";
+        } else {
+            $replacedOutput = $bashOut;
+        }
     }
 
     $scriptOutput['output'] = $replacedOutput;
     $scriptOutput['name'] = count($fullName) > 1 ? $fullName[1] : 'null';;
     $scriptOutput['id'] = $extractedHngId;
     $scriptOutput['email'] = strtolower($extractedMail);
+    $scriptOutput['file'] = $file;
     $scriptOutput['language'] = $language;
     $scriptOutput['status'] = $status;
 
@@ -149,11 +165,11 @@ function run_script($command, string $language)
  * Pattern Matching for the string Output
  * 
  * @param string $output : The output from exec
- * @return string Passed : or Failed, and that depends if string of $output matches the Regex
+ * @return string Pass : or Fail, and that depends if string of $output matches the Regex
  */
 function getScriptOutputStatus($output)
 {
-    return preg_match('/^Hello\sWorld[,|.|!]?\sthis\sis\s[a-zA-Z\-]{2,}\s[a-zA-Z\-]{2,}(\s[a-zA-Z]{2,})?\swith\sHNGi7\sID\s(HNG-\d{3,})\sand\semail\s(([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6})\susing\s[a-zA-Z0-9|#]{2,}\sfor\sstage\s2\stask.?$/i', trim($output)) ? 'passed' : 'failed';
+    return preg_match('/^Hello\sWorld[,|.|!]?\sthis\sis\s[a-zA-Z\-]{2,}\s[a-zA-Z\-]{2,}(\s[a-zA-Z]{2,})?\swith\sHNGi7\sID\s(HNG-\d{3,})\sand\semail\s(([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6})\susing\s[a-zA-Z0-9|#]{2,}\sfor\sstage\s2\stask?$/i', trim($output)) ? 'pass' : 'fail';
 }
 
 /**
@@ -168,7 +184,7 @@ function getScriptOutputStatus($output)
 function extractSubstring($pattern, $inputString)
 {
     preg_match($pattern, $inputString, $emailMatch);
-    return $emailMatch[0];
+    return count($emailMatch) > 0 ? $emailMatch[0] : 'N/A';
 }
 
 /**
@@ -206,9 +222,9 @@ function getPassedAndFailed($totalOutputProcessed)
     $totalFail = 0;
 
     foreach ($validOutput as $output) {
-        if ($output['status'] == 'passed') {
+        if ($output['status'] == 'pass') {
             $totalPass++;
-        } elseif ($output['status'] == 'failed') {
+        } elseif ($output['status'] == 'fail') {
             $totalFail++;
         }
     }
@@ -225,6 +241,7 @@ list($outs, $totalInternsSubmitted, $totalPassOutput, $totalFailOutput) = output
 
 // preview the results
 if ($jsonEnabled) {
+    header('Content-Type: application/json'); // set json header
     echo json_encode($outs);
 } else {
 ?>
@@ -394,11 +411,11 @@ if ($jsonEnabled) {
                 color: #2F80ED;
             }
 
-            .contents .top-row .passed span {
+            .contents .top-row .pass span {
                 color: #27AE60;
             }
 
-            .contents .top-row .failed span {
+            .contents .top-row .fail span {
                 color: #EB5757;
             }
 
@@ -641,11 +658,11 @@ if ($jsonEnabled) {
                 text-align: center;
             }
 
-            .contents table tbody tr .status .passed {
+            .contents table tbody tr .status .pass {
                 background-color: #27AE60;
             }
 
-            .contents table tbody tr .status .failed {
+            .contents table tbody tr .status .fail {
                 background-color: #EB5757;
             }
 
@@ -669,8 +686,8 @@ if ($jsonEnabled) {
             <div class="contents">
                 <div class="top-row">
                     <p>submitted: <span><?php echo ($totalInternsSubmitted) ?></span></p>
-                    <p class="passed">passed: <span><?php echo ($totalPassOutput) ?></span></p>
-                    <p class="failed">failed: <span><?php echo ($totalFailOutput) ?></span></p>
+                    <p class="pass">pass: <span><?php echo ($totalPassOutput) ?></span></p>
+                    <p class="fail">fail: <span><?php echo ($totalFailOutput) ?></span></p>
                 </div>
 
                 <div class="log">
@@ -700,17 +717,16 @@ if ($jsonEnabled) {
                             <?php
                             $rowRecord = 1;
                             $outputRecord = $outs['valid'];
+                            $outputFailRecord = $outs['invalid'];
                             foreach ($outputRecord as $record) {
-                                $peformanceStatus = $record['status'] == "passed" ? "Passed" : "Failed";
-                                echo <<<EOL
-                                            <tr>
-                                                <td class="sn">$rowRecord</td>
-                                                <td class="id">$record[id]</td>
-                                                <td class="name">$record[name]</td>
-                                                <td class="message">$record[output]</td>
-                                                <td class="status"><span class=$record[status]>$peformanceStatus</span></td>
-                                            </tr>
-                                            EOL;
+                                $peformanceStatusValid = $record['status'] == "pass" ? "Pass" : "Fail";
+                                echo '<tr>';
+                                echo   '<td class="sn">' . $rowRecord . '</td>';
+                                echo '<td class="id">' . $record['id'] . '</td>';
+                                echo '<td class="name">' . $record['name'] . '</td>';
+                                echo '<td class="message">' . $record['output'] . '</td>';
+                                echo '<td class="status"><span class=' . $record['status'] . '>' . $peformanceStatusValid . '</span></td>';
+                                echo '</tr>';
                                 $rowRecord++;
 
                                 // flush and buffer

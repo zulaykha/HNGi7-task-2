@@ -1,9 +1,11 @@
-var myIntro='Hello World, this is ';
-var myName='Daniel Chukwuyenum Dennis';
-var myId='HNG-01245';
-var myEmail='deedan19@gmail.com';
-var myLang =' using JavaScript for stage 2 task';
+const name = 'Daniel Chukwuyenum Dennis'
+const email = 'deedan19@gmail.com'
+const id = 'HNG-01245'
+const language = 'JavaScript'
 
-var fullDetails= myIntro+myName+' with HNGi7 ID '+myId+' and '+myEmail+myLang;
 
-console.log(fullDetails); 
+
+
+let output = `Hello World, this is ${name} with HNGi7 ID ${id} and email ${email} using ${language} for stage 2 task.`
+
+return console.log(output);

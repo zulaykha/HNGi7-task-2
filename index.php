@@ -20,6 +20,7 @@ function outputFiles($path)
 {
     // totalOutput contains 2 arrays - valid (for valid file types), invalid (for unsupported file types)
     $totalOutput = ["valid" => [], "invalid" => []];
+    $totalExecOutput = [];
     $internsSubmitted = 0;
 
     // Check directory exists or not
@@ -41,17 +42,17 @@ function outputFiles($path)
                         switch ($fileExtension) {
                             case 'js':
                                 $scriptOut = run_script("node $filePath 2>&1", "Javascript", $file);
-                                array_push($totalOutput['valid'], $scriptOut);
+                                array_push($totalExecOutput, $scriptOut);
                                 break;
 
                             case 'py':
                                 $scriptOut = run_script("python3 $filePath 2>&1", "Python", $file);
-                                array_push($totalOutput['valid'], $scriptOut);
+                                array_push($totalExecOutput, $scriptOut);
                                 break;
 
                             case 'php':
                                 $scriptOut = run_script("php $filePath 2>&1", "PHP", $file);
-                                array_push($totalOutput['valid'], $scriptOut);
+                                array_push($totalExecOutput, $scriptOut);
                                 break;
 
                             default:
@@ -71,6 +72,10 @@ function outputFiles($path)
                 }
             }
         }
+    }
+    foreach ($totalExecOutput as $execOutput) {
+        $processedOutput = analyzeScript($execOutput[0], $execOutput[1], $execOutput[2]);
+        array_push($totalOutput['valid'], $processedOutput);
     }
     list($totalPass, $totalFail) = getPassedAndFailed($totalOutput);
     return array($totalOutput, $internsSubmitted, $totalPass, $totalFail);
@@ -117,15 +122,18 @@ function getFileExtension($file)
  * */
 function run_script($command, string $language, string $file)
 {
-
-    $scriptOutput = [];
     $bashOut = exec($command);
+    return array($bashOut, $file, $language);
+}
 
+function analyzeScript($bashOut, $file, $language)
+{
+    $scriptOutput = [];
     $status = getScriptOutputStatus($bashOut);
 
     // get full name
     $bashOutParts = explode(' with HNG', $bashOut)[0];
-    $fullName = explode('his is ', $bashOutParts);
+    $fullName = explode('this is ', $bashOutParts);
 
     // extract email
     $emailPattern = '/[a-z0-9_\-\+\.]+@[a-z0-9\-]+\.([a-z]{2,4})(?:\.[a-z]{2})?/i';
@@ -143,7 +151,7 @@ function run_script($command, string $language, string $file)
         $wordsToReplace = "and email " . $extractedMail;
         $replacedOutput = removeString($bashOut, $wordsToReplace, "");
     } else {
-        if ($bashOut = '' || !ctype_alpha($bashOut[0])) {
+        if ($bashOut == '' || !ctype_alpha($bashOut[0])) {
             $replacedOutput = "Check your Output, it must begin with a letter";
         } else {
             $replacedOutput = $bashOut;
@@ -179,12 +187,12 @@ function getScriptOutputStatus($output)
  * 
  * @param string $pattern : The pattern use for matching
  * @param string $inputString : The input string to check if substring exists
- * @return string $emailMatch : The string to be returned, it could be an empty string is substring doesn't exist
+ * @return string $stringMatch : The string to be returned, it could be an empty string is substring doesn't exist
  */
 function extractSubstring($pattern, $inputString)
 {
-    preg_match($pattern, $inputString, $emailMatch);
-    return count($emailMatch) > 0 ? $emailMatch[0] : 'N/A';
+    preg_match($pattern, $inputString, $stringMatch);
+    return count($stringMatch) > 0 ? $stringMatch[0] : 'null';
 }
 
 /**
@@ -198,7 +206,8 @@ function extractSubstring($pattern, $inputString)
  */
 function removeString($originalString, $subString, $replaceWith)
 {
-    return str_replace($subString, $replaceWith, $originalString);
+    $newVal = str_replace($subString, $replaceWith, $originalString);
+    return $newVal ? $newVal : $originalString;
 }
 
 
@@ -229,7 +238,7 @@ function getPassedAndFailed($totalOutputProcessed)
         }
     }
 
-    foreach ($invalidOutput as $inout) {
+    foreach ($invalidOutput as $invout) {
         $totalFail++;
     }
     return array($totalPass, $totalFail);
@@ -242,7 +251,7 @@ list($outs, $totalInternsSubmitted, $totalPassOutput, $totalFailOutput) = output
 // preview the results
 if ($jsonEnabled) {
     header('Content-Type: application/json'); // set json header
-    echo json_encode($outs);
+    echo json_encode($outs['valid']);
 } else {
 ?>
     <html lang="en">
@@ -732,7 +741,6 @@ if ($jsonEnabled) {
                                 // flush and buffer
                                 flush();
                                 ob_flush();
-                                sleep(1);
                             } ?>
                         </tbody>
                     </table>

@@ -1,6 +1,6 @@
 var fullName = "Adekunle Bamikole";
 var id = "HNG-00708";
-var email = "berkel97@gmail.com";
+var email = "adekunlebamikole@gmail.com";
 var language = "Javascript";
 
 var output =

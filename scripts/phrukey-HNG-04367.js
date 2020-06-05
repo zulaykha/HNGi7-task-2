@@ -5,4 +5,4 @@ const languague = "Javascript";
 
 let output = `Hello World, this is ${name} with HNGi7 ID ${id} and email ${email} using ${languague} for stage 2 task`;
 
-console.log(output)
+console.log(output);

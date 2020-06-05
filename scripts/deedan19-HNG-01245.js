@@ -1,9 +1,1 @@
-var myIntro='Hello World, this is ';
-var myName='Daniel Chukwuyenum Dennis';
-var myId='HNG-01245';
-var myEmail='deedan19@gmail.com';
-var myLang =' using JavaScript for stage 2 task';
-
-var fullDetails= myIntro+myName+' with HNGi7 ID '+myId+' and '+myEmail+myLang;
-
-console.log(fullDetails); 
+console.log('Hello world, this Daniel Chukwuyenum Dennis with HNGi7 ID HNG-01245 and deedan19@gmail.com using Javascript for stage 2 task');

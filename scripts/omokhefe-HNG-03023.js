@@ -1,9 +1,9 @@
 class User {
     constructor(fullname, language, id, email ) {
-        this.fullname= fullname;
+        this.fullname= fullname
         this.language= language;
         this.id= id;
-        this.email = email;
+        this.email =email;
 }
 sayHello ( ) {
     let outputMessage  = `Hello World, this is ${this.fullname} with HNGi7 ID ${this.id} and email ${this.email} using ${this.language} for stage 2 task`;

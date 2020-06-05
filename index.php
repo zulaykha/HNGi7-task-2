@@ -706,9 +706,9 @@ if ($jsonEnabled) {
 
         <section class="content-wrapper">
             <div class="contents">
-                <?php 
-                    // Call the outputFiles (it is the main function) function
-                    list($outs, $totalInternsSubmitted, $totalPassOutput, $totalFailOutput) = outputFiles("scripts");
+                <?php
+                // Call the outputFiles
+                list($outs, $totalInternsSubmitted, $totalPassOutput, $totalFailOutput) = outputFiles("scripts");
                 ?>
                 <div class="top-row">
                     <p>submitted: <span><?php echo ($totalInternsSubmitted) ?></span></p>

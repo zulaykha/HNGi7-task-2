@@ -5,4 +5,4 @@ function hngInternship(name, hngId, email, language){
     +  " " + hngId +" " +"and email" + " "  + email + " "+"using" +" "+language+ " "+"for stage 2 task");
 
 }
-  hngInternship ("oluwasube promise", "HNG-02244", "enibeke20@gmail.com", "javascript");
+  hngInternship ("Oluwasube Promise", "HNG-02244", "enibeke20@gmail.com", "JavaScript");

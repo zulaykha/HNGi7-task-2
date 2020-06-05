@@ -1,4 +1,4 @@
-const name = 'Akinjde',
+const name = 'Akinjide',
       id = 'HNG-00752',
       email = 'sleekzy7@gmail.com',
       language = 'Javascript';

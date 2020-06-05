@@ -1,4 +1,4 @@
-const name = "Adenekan Kofoworola"
+const name = "Adenekan Simbiat"
 const id = "00238";
 const language = "JavaScript";
 const email = "adenekankofoworola@gmail.com"

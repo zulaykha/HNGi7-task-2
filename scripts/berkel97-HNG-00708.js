@@ -12,6 +12,6 @@ var output =
   email +
   " using " +
   language +
-  " for stage 2 task.";
+  " for stage 2 task";
 
 console.log(output);

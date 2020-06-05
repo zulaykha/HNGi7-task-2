@@ -110,7 +110,7 @@ function getFileExtension($file)
  * 
  * @var string $bashOut : this holds the output string of the exec execution
  * 
- * @return array An array of the executed bash command, the file name and the language used
+ * @return array An array of the executed bash command, the file name and the language used for a given script
  * */
 function run_script($command, string $language, string $file)
 {

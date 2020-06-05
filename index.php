@@ -106,9 +106,27 @@ function getFileExtension($file)
  * 
  * @param string $command : the command which is dependent on which script was detected
  * @param string $language : the language used for each script
+ * @param string $file : the file name for this execution
+ * 
+ * @var string $bashOut : this holds the output string of the exec execution
+ * 
+ * @return array An array of the executed bash command, the file name and the language used
+ * */
+function run_script($command, string $language, string $file)
+{
+    $bashOut = exec($command);
+    return array($bashOut, $file, $language);
+}
+
+
+/**
+ * Executes team member's scripts and returns an object with the required details
+ * 
+ * @param string $bashOut : the otput from the bash command
+ * @param string $language : the language used for each script
+ * @param string $language : the language used for each script
  * 
  * @var array $scriptOutput : this returns an array objects which holds information about an intern and script status
- * @var string $bashOut : this holds the output string after the exec has been executed
  * @var string $status : The status got from checking the script output, it is either passed or failed
  * @var string $bashOutParts : This is a temporary variable used for splitting the $bashOut the get the name from $bashOut
  * @var string $fullName : This is the full name derived after continually splitting $bashOutPart
@@ -120,12 +138,6 @@ function getFileExtension($file)
  * 
  * @return array An array of object containing a given intern information and script status
  * */
-function run_script($command, string $language, string $file)
-{
-    $bashOut = exec($command);
-    return array($bashOut, $file, $language);
-}
-
 function analyzeScript($bashOut, $file, $language)
 {
     $scriptOutput = [];

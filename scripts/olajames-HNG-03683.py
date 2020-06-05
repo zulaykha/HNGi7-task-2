@@ -1,5 +1,5 @@
 hngid = 'HNG-03683'
-name = " Afolaranmi James Olaoluwa "
+name = "Afolaranmi James Olaoluwa"
 email = "olaoluwaafolaranmi@gmail.com"
 language = "python"
 def team_task():

@@ -5,5 +5,5 @@ const language = 'javascript';
 
 task2();
 function task2() {
-	console.log(`Hello World, this is ${fullname} with HNGi7 ID ${id} and email ${email} using ${language} for Stage 2 task`);
+	console.log(`Hello World, this is ${fullname} with HNGi7 ID ${id} and email ${email} using ${language} for stage 2 task`);
 }

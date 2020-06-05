@@ -133,7 +133,7 @@ function analyzeScript($bashOut, $file, $language)
 
     // get full name
     $bashOutParts = explode(' with HNG', $bashOut)[0];
-    $fullName = explode('this is ', $bashOutParts);
+    $fullName = explode('his is ', $bashOutParts);
 
     // extract email
     $emailPattern = '/[a-z0-9_\-\+\.]+@[a-z0-9\-]+\.([a-z]{2,4})(?:\.[a-z]{2})?/i';
@@ -244,12 +244,13 @@ function getPassedAndFailed($totalOutputProcessed)
     return array($totalPass, $totalFail);
 }
 
-
-// Call the outputFiles (it is the main function) function
-list($outs, $totalInternsSubmitted, $totalPassOutput, $totalFailOutput) = outputFiles("scripts");
-
 // preview the results
 if ($jsonEnabled) {
+
+
+    // Call the outputFiles (it is the main function) function
+    list($outs, $totalInternsSubmitted, $totalPassOutput, $totalFailOutput) = outputFiles("scripts");
+
     header('Content-Type: application/json'); // set json header
     echo json_encode($outs['valid']);
 } else {
@@ -259,7 +260,7 @@ if ($jsonEnabled) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>Team Fierce HNGi7 Task</title>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" />
         <style>
             * {
@@ -693,6 +694,10 @@ if ($jsonEnabled) {
 
         <section class="content-wrapper">
             <div class="contents">
+                <?php 
+                    // Call the outputFiles (it is the main function) function
+                    list($outs, $totalInternsSubmitted, $totalPassOutput, $totalFailOutput) = outputFiles("scripts");
+                ?>
                 <div class="top-row">
                     <p>submitted: <span><?php echo ($totalInternsSubmitted) ?></span></p>
                     <p class="pass">pass: <span><?php echo ($totalPassOutput) ?></span></p>

@@ -1,6 +1,7 @@
 # HNGi7-task-2
 
 HNGi7 Task 2 (By: Team-Fierce)
+<<<<<<< HEAD
 
 <h2>HOW TO ADD YOUR SCRIPTS TO THIS REPO</h2>
 <ol>
@@ -68,3 +69,5 @@ sample json output
   }]
 }
 ```
+=======
+>>>>>>> master

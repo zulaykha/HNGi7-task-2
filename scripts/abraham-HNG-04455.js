@@ -1,5 +1,5 @@
 var genId = "HNG-04455";
-var genName = "Osayi-Ekekhor Abraham";
+var genName = "OsayiEkekhor Abraham";
 var genLang = "JavaScript";
 var email = "ekekhorabraham@gmail.com"
 

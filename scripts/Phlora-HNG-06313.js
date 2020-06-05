@@ -1,5 +1,5 @@
 
-slet greeting = "Hello World,";
+let greeting = "Hello World,";
 let fullName = "Flora Okezue";
 let hngID = "HNG-06313";
 let email = "florachisom@gmail.com";

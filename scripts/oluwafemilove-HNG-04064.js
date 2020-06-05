@@ -5,4 +5,5 @@ let mDetails = {
    language:'Javascript'
 }
 
-console.log(`Hello World, this is ${mDetails.name} with HNGi7 ID ${mDetails.id}, and email ${mDetails.email}, using ${mDetails.language} for stage 2 task`);
+console.log(`Hello World, this is ${mDetails.name} with HNGi7 ID ${mDetails.id} and email ${mDetails.email} using ${mDetails.language} for stage 2 task`);
+

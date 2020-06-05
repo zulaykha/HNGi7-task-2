@@ -722,9 +722,9 @@ if ($jsonEnabled) {
                     <div class="lead-wrapper">
                         <p class="lead">Team leads</p>
                         <div>
-                            <p>Backend: <span>@kubiat</span></p>
-                            <p>Frontend: <span>@delecoder</span></p>
-                            <p>Devops: <span>@tomiwaajayi</span></p>
+                            <p>Backend: <span>@ojchris</span></p>
+                            <p>Frontend: <span>@JoelEkpenyong</span></p>
+                            <p>Devops: <span>@ayodeji</span></p>
                         </div>
                     </div>
                 </div>

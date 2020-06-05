@@ -106,9 +106,27 @@ function getFileExtension($file)
  * 
  * @param string $command : the command which is dependent on which script was detected
  * @param string $language : the language used for each script
+ * @param string $file : the file name for this execution
+ * 
+ * @var string $bashOut : this holds the output string of the exec execution
+ * 
+ * @return array An array of the executed bash command, the file name and the language used for a given script
+ * */
+function run_script($command, string $language, string $file)
+{
+    $bashOut = exec($command);
+    return array($bashOut, $file, $language);
+}
+
+
+/**
+ * Executes team member's scripts and returns an object with the required details
+ * 
+ * @param string $bashOut : the otput from the bash command
+ * @param string $language : the language used for each script
+ * @param string $language : the language used for each script
  * 
  * @var array $scriptOutput : this returns an array objects which holds information about an intern and script status
- * @var string $bashOut : this holds the output string after the exec has been executed
  * @var string $status : The status got from checking the script output, it is either passed or failed
  * @var string $bashOutParts : This is a temporary variable used for splitting the $bashOut the get the name from $bashOut
  * @var string $fullName : This is the full name derived after continually splitting $bashOutPart
@@ -120,12 +138,6 @@ function getFileExtension($file)
  * 
  * @return array An array of object containing a given intern information and script status
  * */
-function run_script($command, string $language, string $file)
-{
-    $bashOut = exec($command);
-    return array($bashOut, $file, $language);
-}
-
 function analyzeScript($bashOut, $file, $language)
 {
     $scriptOutput = [];
@@ -133,7 +145,7 @@ function analyzeScript($bashOut, $file, $language)
 
     // get full name
     $bashOutParts = explode(' with HNG', $bashOut)[0];
-    $fullName = explode('this is ', $bashOutParts);
+    $fullName = explode('his is ', $bashOutParts);
 
     // extract email
     $emailPattern = '/[a-z0-9_\-\+\.]+@[a-z0-9\-]+\.([a-z]{2,4})(?:\.[a-z]{2})?/i';
@@ -244,12 +256,13 @@ function getPassedAndFailed($totalOutputProcessed)
     return array($totalPass, $totalFail);
 }
 
-
-// Call the outputFiles (it is the main function) function
-list($outs, $totalInternsSubmitted, $totalPassOutput, $totalFailOutput) = outputFiles("scripts");
-
 // preview the results
 if ($jsonEnabled) {
+
+
+    // Call the outputFiles (it is the main function) function
+    list($outs, $totalInternsSubmitted, $totalPassOutput, $totalFailOutput) = outputFiles("scripts");
+
     header('Content-Type: application/json'); // set json header
     echo json_encode($outs['valid']);
 } else {
@@ -259,7 +272,7 @@ if ($jsonEnabled) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>Team Fierce HNGi7 Task</title>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" />
         <style>
             * {
@@ -693,6 +706,10 @@ if ($jsonEnabled) {
 
         <section class="content-wrapper">
             <div class="contents">
+                <?php
+                // Call the outputFiles
+                list($outs, $totalInternsSubmitted, $totalPassOutput, $totalFailOutput) = outputFiles("scripts");
+                ?>
                 <div class="top-row">
                     <p>submitted: <span><?php echo ($totalInternsSubmitted) ?></span></p>
                     <p class="pass">pass: <span><?php echo ($totalPassOutput) ?></span></p>

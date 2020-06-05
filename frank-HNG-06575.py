@@ -12,9 +12,9 @@ class HNGi7(object):
         self.lang = lang
         self.email = email
     def output(self):
-        return 'Hello World, this is {} with HNGi7 ID {} and {} using {} for stage 2 task.'.format(self.name, self.id, self.email, self.lang)
+        return 'Hello World, this is {} with HNGi7 ID {} and email {} using {} for stage 2 task'.format(self.name, self.id, self.email, self.lang)
 
-details = HNGi7('Osaretin Frank', 'HNG-06575', 'Python')
+details = HNGi7('Osaretin Frank', 'HNG-06575','lightfree8@gmail.com', 'Python')
 print(details.output())
         
 

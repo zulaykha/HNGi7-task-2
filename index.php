@@ -20,6 +20,7 @@ function outputFiles($path)
 {
     // totalOutput contains 2 arrays - valid (for valid file types), invalid (for unsupported file types)
     $totalOutput = ["valid" => [], "invalid" => []];
+    $totalExecOutput = [];
     $internsSubmitted = 0;
 
     // Check directory exists or not
@@ -40,29 +41,41 @@ function outputFiles($path)
                     if ($fileExtension) {
                         switch ($fileExtension) {
                             case 'js':
-                                $scriptOut = run_script("node $filePath 2>&1", "Javascript");
-                                array_push($totalOutput['valid'], $scriptOut);
+                                $scriptOut = run_script("node $filePath 2>&1", "Javascript", $file);
+                                array_push($totalExecOutput, $scriptOut);
                                 break;
 
                             case 'py':
-                                $scriptOut = run_script("python3 $filePath 2>&1", "Python");
-                                array_push($totalOutput['valid'], $scriptOut);
+                                $scriptOut = run_script("python3 $filePath 2>&1", "Python", $file);
+                                array_push($totalExecOutput, $scriptOut);
                                 break;
 
                             case 'php':
-                                $scriptOut = run_script("php $filePath 2>&1", "PHP");
-                                array_push($totalOutput['valid'], $scriptOut);
+                                $scriptOut = run_script("php $filePath 2>&1", "PHP", $file);
+                                array_push($totalExecOutput, $scriptOut);
                                 break;
 
                             default:
-                                echo "'$file' is not valid \n";
-                                array_push($totalOutput['invalid'], $file);
+                                $scriptOut = [];
+                                $properResponse = "Files with ." . $fileExtension . " extension are not supported!";
+                                $scriptOut['output'] = $properResponse;
+                                $scriptOut['name'] = "null";
+                                $scriptOut['file'] = $file;
+                                $scriptOut['id'] = "null";
+                                $scriptOut['email'] = "null";
+                                $scriptOut['language'] = "null";
+                                $scriptOut['status'] = "fail";
+                                array_push($totalOutput['invalid'], $scriptOut);
                                 break;
                         }
                     }
                 }
             }
         }
+    }
+    foreach ($totalExecOutput as $execOutput) {
+        $processedOutput = analyzeScript($execOutput[0], $execOutput[1], $execOutput[2]);
+        array_push($totalOutput['valid'], $processedOutput);
     }
     list($totalPass, $totalFail) = getPassedAndFailed($totalOutput);
     return array($totalOutput, $internsSubmitted, $totalPass, $totalFail);
@@ -107,12 +120,15 @@ function getFileExtension($file)
  * 
  * @return array An array of object containing a given intern information and script status
  * */
-function run_script($command, string $language)
+function run_script($command, string $language, string $file)
 {
-
-    $scriptOutput = [];
     $bashOut = exec($command);
+    return array($bashOut, $file, $language);
+}
 
+function analyzeScript($bashOut, $file, $language)
+{
+    $scriptOutput = [];
     $status = getScriptOutputStatus($bashOut);
 
     // get full name
@@ -135,7 +151,7 @@ function run_script($command, string $language)
         $wordsToReplace = "and email " . $extractedMail;
         $replacedOutput = removeString($bashOut, $wordsToReplace, "");
     } else {
-        if (!ctype_alpha($bashOut[0])) {
+        if ($bashOut == '' || !ctype_alpha($bashOut[0])) {
             $replacedOutput = "Check your Output, it must begin with a letter";
         } else {
             $replacedOutput = $bashOut;
@@ -146,6 +162,7 @@ function run_script($command, string $language)
     $scriptOutput['name'] = count($fullName) > 1 ? $fullName[1] : 'null';;
     $scriptOutput['id'] = $extractedHngId;
     $scriptOutput['email'] = strtolower($extractedMail);
+    $scriptOutput['file'] = $file;
     $scriptOutput['language'] = $language;
     $scriptOutput['status'] = $status;
 
@@ -156,11 +173,11 @@ function run_script($command, string $language)
  * Pattern Matching for the string Output
  * 
  * @param string $output : The output from exec
- * @return string Passed : or Failed, and that depends if string of $output matches the Regex
+ * @return string Pass : or Fail, and that depends if string of $output matches the Regex
  */
 function getScriptOutputStatus($output)
 {
-    return preg_match('/^Hello\sWorld[,|.|!]?\sthis\sis\s[a-zA-Z\-]{2,}\s[a-zA-Z\-]{2,}(\s[a-zA-Z]{2,})?\swith\sHNGi7\sID\s(HNG-\d{3,})\sand\semail\s(([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6})\susing\s[a-zA-Z0-9|#]{2,}\sfor\sstage\s2\stask?$/i', trim($output)) ? 'passed' : 'failed';
+    return preg_match('/^Hello\sWorld[,|.|!]?\sthis\sis\s[a-zA-Z\-]{2,}\s[a-zA-Z\-]{2,}(\s[a-zA-Z]{2,})?\swith\sHNGi7\sID\s(HNG-\d{3,})\sand\semail\s(([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6})\susing\s[a-zA-Z0-9|#]{2,}\sfor\sstage\s2\stask?$/i', trim($output)) ? 'pass' : 'fail';
 }
 
 /**
@@ -170,12 +187,12 @@ function getScriptOutputStatus($output)
  * 
  * @param string $pattern : The pattern use for matching
  * @param string $inputString : The input string to check if substring exists
- * @return string $emailMatch : The string to be returned, it could be an empty string is substring doesn't exist
+ * @return string $stringMatch : The string to be returned, it could be an empty string is substring doesn't exist
  */
 function extractSubstring($pattern, $inputString)
 {
-    preg_match($pattern, $inputString, $emailMatch);
-    return $emailMatch[0];
+    preg_match($pattern, $inputString, $stringMatch);
+    return count($stringMatch) > 0 ? $stringMatch[0] : 'null';
 }
 
 /**
@@ -189,7 +206,8 @@ function extractSubstring($pattern, $inputString)
  */
 function removeString($originalString, $subString, $replaceWith)
 {
-    return str_replace($subString, $replaceWith, $originalString);
+    $newVal = str_replace($subString, $replaceWith, $originalString);
+    return $newVal ? $newVal : $originalString;
 }
 
 
@@ -213,14 +231,14 @@ function getPassedAndFailed($totalOutputProcessed)
     $totalFail = 0;
 
     foreach ($validOutput as $output) {
-        if ($output['status'] == 'passed') {
+        if ($output['status'] == 'pass') {
             $totalPass++;
-        } elseif ($output['status'] == 'failed') {
+        } elseif ($output['status'] == 'fail') {
             $totalFail++;
         }
     }
 
-    foreach ($invalidOutput as $inout) {
+    foreach ($invalidOutput as $invout) {
         $totalFail++;
     }
     return array($totalPass, $totalFail);
@@ -232,7 +250,8 @@ list($outs, $totalInternsSubmitted, $totalPassOutput, $totalFailOutput) = output
 
 // preview the results
 if ($jsonEnabled) {
-    echo json_encode($outs);
+    header('Content-Type: application/json'); // set json header
+    echo json_encode($outs['valid']);
 } else {
 ?>
     <html lang="en">
@@ -401,11 +420,11 @@ if ($jsonEnabled) {
                 color: #2F80ED;
             }
 
-            .contents .top-row .passed span {
+            .contents .top-row .pass span {
                 color: #27AE60;
             }
 
-            .contents .top-row .failed span {
+            .contents .top-row .fail span {
                 color: #EB5757;
             }
 
@@ -648,11 +667,11 @@ if ($jsonEnabled) {
                 text-align: center;
             }
 
-            .contents table tbody tr .status .passed {
+            .contents table tbody tr .status .pass {
                 background-color: #27AE60;
             }
 
-            .contents table tbody tr .status .failed {
+            .contents table tbody tr .status .fail {
                 background-color: #EB5757;
             }
 
@@ -676,8 +695,8 @@ if ($jsonEnabled) {
             <div class="contents">
                 <div class="top-row">
                     <p>submitted: <span><?php echo ($totalInternsSubmitted) ?></span></p>
-                    <p class="passed">passed: <span><?php echo ($totalPassOutput) ?></span></p>
-                    <p class="failed">failed: <span><?php echo ($totalFailOutput) ?></span></p>
+                    <p class="pass">pass: <span><?php echo ($totalPassOutput) ?></span></p>
+                    <p class="fail">fail: <span><?php echo ($totalFailOutput) ?></span></p>
                 </div>
 
                 <div class="log">
@@ -707,23 +726,21 @@ if ($jsonEnabled) {
                             <?php
                             $rowRecord = 1;
                             $outputRecord = $outs['valid'];
+                            $outputFailRecord = $outs['invalid'];
                             foreach ($outputRecord as $record) {
-                                $peformanceStatus = $record['status'] == "passed" ? "Passed" : "Failed";
-                                echo <<<EOL
-                                            <tr>
-                                                <td class="sn">$rowRecord</td>
-                                                <td class="id">$record[id]</td>
-                                                <td class="name">$record[name]</td>
-                                                <td class="message">$record[output]</td>
-                                                <td class="status"><span class=$record[status]>$peformanceStatus</span></td>
-                                            </tr>
-                                            EOL;
+                                $peformanceStatusValid = $record['status'] == "pass" ? "Pass" : "Fail";
+                                echo '<tr>';
+                                echo   '<td class="sn">' . $rowRecord . '</td>';
+                                echo '<td class="id">' . $record['id'] . '</td>';
+                                echo '<td class="name">' . $record['name'] . '</td>';
+                                echo '<td class="message">' . $record['output'] . '</td>';
+                                echo '<td class="status"><span class=' . $record['status'] . '>' . $peformanceStatusValid . '</span></td>';
+                                echo '</tr>';
                                 $rowRecord++;
 
                                 // flush and buffer
                                 flush();
                                 ob_flush();
-                                sleep(1);
                             } ?>
                         </tbody>
                     </table>

@@ -1,10 +1,10 @@
 //Declaring variables
-let greeting = "Hello world, ";
+let greeting = "Hello World,";
 let name = "Udoessien Elizabeth";
 let Id = "HNG-00193";
 let email = "elizabethudoessien03@gmail.com";
 let language = "JavaScript";
-let task = "stage 2 task.";
+let task = "stage 2 task";
 
 let info = `${greeting}this is ${name} with HNGi7 ID ${Id} and email ${email} using ${language} for ${task}`;
 
